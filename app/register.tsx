@@ -3,8 +3,9 @@ import { useState } from "react";
 import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
     const [passwordSeccure, setPasswordSeccure] = useState(true)
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -12,10 +13,17 @@ export default function LoginScreen() {
             <SafeAreaView style={styles.container}>
                 <ScrollView
                     showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: 16 }}
                 >
                     <View style={styles.containerTitle}>
-                        <Text style={styles.title}>Let's Sign You In</Text>
-                        <Text>Welcome back, you've been missed!</Text>
+                        <Text style={styles.title}>Getting Started</Text>
+                        <Text>Seems you are new here.{'\n'}Let's up youre profile</Text>
+                    </View>
+                    <View style={styles.containerTextField}>
+                        <Text>Name</Text>
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                            <TextInput placeholder='Input your name' style={styles.textField} />
+                        </TouchableWithoutFeedback>
                     </View>
                     <View style={styles.containerTextField}>
                         <Text>Email Address</Text>
@@ -44,11 +52,11 @@ export default function LoginScreen() {
                             style={styles.button}
                             onPress={() => alert('oke')}
                         >
-                            <Text style={{ color: 'white' }}>Login</Text>
+                            <Text style={{ color: 'white' }}>Sign Up</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.containerRedirectSignIn}>
-                        <Text style={{ textAlign: 'center' }}>Don't have an account?</Text>
+                    <View style={styles.containerRedirectSignUp}>
+                        <Text style={{ textAlign: 'center' }}>Already have an account?</Text>
                         <TouchableOpacity
                             onPress={() => alert('okeee')}
                         >
@@ -60,7 +68,6 @@ export default function LoginScreen() {
         </KeyboardAvoidingView>
     )
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -95,7 +102,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center'
     },
-    containerRedirectSignIn: {
+    containerRedirectSignUp: {
         marginTop: 20,
         alignItems: 'center',
         justifyContent: 'center',
