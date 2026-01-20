@@ -1,8 +1,17 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Image, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Image,
+  Keyboard,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function HomeScreen() {
+export default function LandingScren() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.containerProfile}>
@@ -31,7 +40,33 @@ export default function HomeScreen() {
         }}
       >
         <MaterialIcons name="search" size={24} />
-        <TextInput placeholder="Search" style={{ flex: 1 }} />
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss}>
+          <TextInput placeholder="Search" style={{ flex: 1 }} />
+        </TouchableWithoutFeedback>
+      </View>
+      <View style={{ marginTop: 16 }}>
+        <Text style={{ fontSize: 20, fontWeight: "600" }}>Job Overview</Text>
+        <ScrollView horizontal contentContainerStyle={{ gap: 10 }}>
+          {[1, 2, 3, 4, 5].map((_, index) => {
+            return (
+              <View
+                key={index}
+                style={{
+                  marginTop: 10,
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  width: 100,
+                  minHeight: 40,
+                  alignItems: "center",
+                  padding: 8,
+                }}
+              >
+                <Text style={{ fontWeight: "600" }}>Applied</Text>
+                <Text>(10)</Text>
+              </View>
+            );
+          })}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
