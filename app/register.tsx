@@ -1,17 +1,18 @@
+import ButtonComponent from "@/components/button";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -72,12 +73,7 @@ export default function RegisterScreen() {
             </View>
           </View>
           <View style={styles.containerTextField}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => alert("oke")}
-            >
-              <Text style={{ color: "white" }}>Sign Up</Text>
-            </TouchableOpacity>
+            <ButtonComponent text="Sign Up" onClick={() => alert("Register")} />
           </View>
           <View style={styles.containerRedirectSignUp}>
             <Text style={{ textAlign: "center" }}>

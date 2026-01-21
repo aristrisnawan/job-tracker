@@ -1,3 +1,4 @@
+import ButtonComponent from "@/components/button";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
@@ -114,18 +115,10 @@ export default function AddJobScreen() {
             </TouchableWithoutFeedback>
           </View>
           <View style={{ marginTop: 16 }}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: "#0E21A0",
-                paddingVertical: 10,
-                borderRadius: 10,
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: "white", textAlign: "center" }}>
-                Save Job
-              </Text>
-            </TouchableOpacity>
+            <ButtonComponent
+              text="Save Job"
+              onClick={() => alert("Job save")}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

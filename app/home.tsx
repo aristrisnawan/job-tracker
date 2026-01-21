@@ -1,3 +1,4 @@
+import ButtonComponent from "@/components/button";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
 import {
@@ -14,11 +15,19 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LandingScren() {
+  const date = new Date();
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.containerProfile}>
         <View>
-          <Text>Wed, 23 March</Text>
+          <Text>
+            {date.toLocaleDateString("id-ID", {
+              weekday: "short",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </Text>
           <Text style={styles.textUser}>Hi, Admin</Text>
         </View>
         <View style={styles.containerImage}>
@@ -101,17 +110,10 @@ export default function LandingScren() {
           })}
         </ScrollView>
         <View style={{ marginTop: 16 }}>
-          <TouchableOpacity
-            onPress={() => router.push("/addJob")}
-            style={{
-              backgroundColor: "#0E21A0",
-              paddingVertical: 10,
-              borderRadius: 10,
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "white", textAlign: "center" }}>Add Job</Text>
-          </TouchableOpacity>
+          <ButtonComponent
+            text="Add Job"
+            onClick={() => router.push("/addJob")}
+          />
           <View style={{ alignItems: "center", marginTop: 50 }}>
             <Text style={styles.textQuote}>Keep Going</Text>
             <Text style={styles.textQuote}>
