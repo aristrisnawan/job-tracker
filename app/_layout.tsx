@@ -26,6 +26,10 @@ export default function RootLayout() {
         />
         <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen name="register" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="addJob"
+          options={{ title: "Add Job", headerShown: true }}
+        />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

@@ -1,4 +1,5 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { router } from "expo-router";
 import {
   Image,
   Keyboard,
@@ -101,6 +102,7 @@ export default function LandingScren() {
         </ScrollView>
         <View style={{ marginTop: 16 }}>
           <TouchableOpacity
+            onPress={() => router.push("/addJob")}
             style={{
               backgroundColor: "#0E21A0",
               paddingVertical: 10,
