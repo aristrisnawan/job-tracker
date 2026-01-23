@@ -60,7 +60,7 @@ export default function LoginScreen() {
             </View>
           </View>
           <View style={styles.containerTextField}>
-            <ButtonComponent text="Login" onClick={() => alert("Okee")} />
+            <ButtonComponent text="Login" onClick={() => router.navigate('/home')} />
           </View>
           <View style={styles.containerRedirectSignIn}>
             <Text style={{ textAlign: "center" }}>Don't have an account?</Text>
