@@ -1,7 +1,9 @@
 import ButtonComponent from "@/components/button";
+import CardJobComponent from "@/components/card-job";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
 import {
+  FlatList,
   Image,
   Keyboard,
   ScrollView,
@@ -16,6 +18,50 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LandingScren() {
   const date = new Date();
+
+  const data = [
+    {
+      id: 1,
+      company: 'Google',
+      position: 'Data Analyst',
+      status: 'Applied',
+      source: 'LinkedIn',
+      applied_date: '09 Jan'
+    },
+    {
+      id: 2,
+      company: 'Glits',
+      position: 'Data Analyst',
+      status: 'Applied',
+      source: 'LinkedIn',
+      applied_date: '09 Jan'
+    },
+    {
+      id: 3,
+      company: 'Telkom',
+      position: 'Data Analyst',
+      status: 'Applied',
+      source: 'LinkedIn',
+      applied_date: '09 Jan'
+    },
+    {
+      id: 4,
+      company: 'Telkom',
+      position: 'Data Analyst',
+      status: 'Applied',
+      source: 'LinkedIn',
+      applied_date: '09 Jan'
+    },
+    {
+      id: 5,
+      company: 'Telkom',
+      position: 'Data Analyst',
+      status: 'Applied',
+      source: 'LinkedIn',
+      applied_date: '09 Jan'
+    }
+  ]
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.containerProfile}>
@@ -75,40 +121,20 @@ export default function LandingScren() {
       <View style={{ marginTop: 16 }}>
         <View style={styles.recentContainer}>
           <Text style={styles.textRecent}>Recent Jobs</Text>
-          <TouchableOpacity onPress={() => alert("Oke")}>
+          <TouchableOpacity onPress={() => router.navigate('/listJobs')}>
             <Text style={styles.textViewAll}>View All</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView
+        <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ gap: 20 }}
-        >
-          {[1, 2, 3].map((_, index) => {
-            return (
-              <View style={styles.cardRecentJobs} key={index}>
-                <View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text style={{ fontWeight: "500" }}>Google</Text>
-                    <View style={styles.containerTitle}>
-                      <Text style={{ color: "white" }}>Applied</Text>
-                    </View>
-                  </View>
-                  <Text style={{ fontWeight: "600" }}>Data Analyst</Text>
-                </View>
-                <Text style={{ fontSize: 12, textAlign: "center" }}>
-                  Applied on 09 Jan: LinkedIn
-                </Text>
-              </View>
-            );
-          })}
-        </ScrollView>
+          contentContainerStyle={{ marginTop: 10, paddingRight: 16, gap: 18 }}
+          data={data.slice(0, 3)}
+          renderItem={({ item }) => (
+            <CardJobComponent items={item} />
+          )}
+          keyExtractor={item => item.id.toString()}
+        />
         <View style={{ marginTop: 16 }}>
           <ButtonComponent
             text="Add Job"
