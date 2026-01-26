@@ -1,5 +1,5 @@
-import LoginScreen from "./login";
+import LandingScren from "./home";
 
 export default function HomeScreen(){
-    return <LoginScreen/>
+    return <LandingScren/>
 }

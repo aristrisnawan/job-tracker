@@ -1,8 +1,11 @@
 import ButtonComponent from "@/components/button";
+import { useAuth } from "@/context/AuthContext";
+import API from "@/services/api";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -18,6 +21,29 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen() {
   const [passwordSeccure, setPasswordSeccure] = useState(true);
+  const { signIn } = useAuth()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Please fill in all fields")
+      return
+    }
+    setIsLoading(true)
+    try {
+      const data = await API.handleLogin({ email, password });
+      if (data.token) {
+        await signIn(data.token)
+      }
+    } catch (error: any) {
+      const serverMessage = error.response?.data?.error
+      Alert.alert("Error", serverMessage || "Something went wrong");
+    } finally {
+      setIsLoading(false)
+    }
+  }
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -33,6 +59,8 @@ export default function LoginScreen() {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <TextInput
                 placeholder="Input your email"
+                onChangeText={(text) => setEmail(text)}
+                value={email}
                 style={styles.textField}
               />
             </TouchableWithoutFeedback>
@@ -45,6 +73,8 @@ export default function LoginScreen() {
                   placeholder="Input your password"
                   style={{ flex: 1 }}
                   autoCapitalize="none"
+                  onChangeText={(text) => setPassword(text)}
+                  value={password}
                   secureTextEntry={passwordSeccure ? true : false}
                 />
               </TouchableWithoutFeedback>
@@ -60,7 +90,7 @@ export default function LoginScreen() {
             </View>
           </View>
           <View style={styles.containerTextField}>
-            <ButtonComponent text="Login" onClick={() => router.navigate('/home')} />
+            <ButtonComponent text="Login" onClick={handleLogin} />
           </View>
           <View style={styles.containerRedirectSignIn}>
             <Text style={{ textAlign: "center" }}>Don't have an account?</Text>

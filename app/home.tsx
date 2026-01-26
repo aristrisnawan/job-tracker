@@ -76,14 +76,16 @@ export default function LandingScren() {
           </Text>
           <Text style={styles.textUser}>Hi, Admin</Text>
         </View>
-        <View style={styles.containerImage}>
-          <Image
-            source={{
-              uri: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=580&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            }}
-            style={styles.image}
-          />
-        </View>
+        <TouchableOpacity onPress={() => router.navigate('/profile')}>
+          <View style={styles.containerImage}>
+            <Image
+              source={{
+                uri: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=580&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              }}
+              style={styles.image}
+            />
+          </View>
+        </TouchableOpacity>
       </View>
       <Text>Keep tracking youre career</Text>
       <View
