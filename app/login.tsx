@@ -35,9 +35,14 @@ export default function LoginScreen() {
     try {
       const data = await API.handleLogin({ email, password });
       if (data.token) {
-        await signIn(data.token)
+        await signIn(data.token, data.user.name)
+        setTimeout(() => {
+          setIsLoading(false)
+          router.replace('/home')
+        }, 2000)
       }
     } catch (error: any) {
+      console.error("Login error:", error);
       const serverMessage = error.response?.data?.error
       Alert.alert("Error", serverMessage || "Something went wrong");
     } finally {
@@ -90,7 +95,7 @@ export default function LoginScreen() {
             </View>
           </View>
           <View style={styles.containerTextField}>
-            <ButtonComponent text="Login" onClick={handleLogin} />
+            <ButtonComponent text="Login" onClick={handleLogin} isLoading={isLoading}/>
           </View>
           <View style={styles.containerRedirectSignIn}>
             <Text style={{ textAlign: "center" }}>Don't have an account?</Text>

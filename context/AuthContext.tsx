@@ -4,13 +4,15 @@ import { createContext, useContext, useEffect, useState } from "react";
 interface AuthProps {
     token: string | null;
     isLoading: boolean;
-    signIn: (token: string) => Promise<void>;
+    name: string | null;
+    signIn: (token: string, name: string) => Promise<void>;
     signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthProps>({
     token: null,
     isLoading: true,
+    name: null,
     signIn: async () => { },
     signOut: async () => { }
 })
@@ -18,29 +20,35 @@ const AuthContext = createContext<AuthProps>({
 //Wrap aplication
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [token, setToken] = useState<string | null>(null)
+    const [name,setName] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         //function get token from phone while open aplication
-        const loadToken = async () => {
+        const loadAuthData = async () => {
             try {
-                const savedToken = await SecureStore.getItemAsync('userToken')
-                if (savedToken) {
-                    setToken(savedToken)
-                }
+                const [savedToken, savedName] = await Promise.all([
+                    SecureStore.getItemAsync('userToken'),
+                    SecureStore.getItemAsync('userName')
+                ])
+                if (savedToken) setToken(savedToken)
+                if (savedName) setName(savedName)
+                
             } catch (error) {
                 console.error("Failled get token", error)
             } finally {
                 setIsLoading(false);
             }
         }
-        loadToken();
+        loadAuthData();
     }, [])
 
     // Function Login
-    const signIn = async (newToken: string) => {
+    const signIn = async (newToken: string, newName: string) => {
         setToken(newToken)
+        setName(newName)
         await SecureStore.setItemAsync('userToken', newToken)
+        await SecureStore.setItemAsync('userName', newName)
     }
 
     // Function Logout
@@ -50,7 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ token, isLoading, signIn, signOut }}>
+        <AuthContext.Provider value={{ token, isLoading,name, signIn, signOut }}>
             {children}
         </AuthContext.Provider>
     )

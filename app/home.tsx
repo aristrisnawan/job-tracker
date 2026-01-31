@@ -1,7 +1,10 @@
 import ButtonComponent from "@/components/button";
 import CardJobComponent from "@/components/card-job";
+import { useAuth } from "@/context/AuthContext";
+import API from "@/services/api";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -17,50 +20,35 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LandingScren() {
+  interface jobsInterface {
+    id: string,
+    user_id: string,
+    company_name: string,
+    position: string,
+    status: string,
+    source: string,
+    apply_date: string,
+    notes: string,
+  }
+
+  const { name } = useAuth()
+  const [jobs, setJobs] = useState<jobsInterface[]>([])
   const date = new Date();
 
-  const data = [
-    {
-      id: 1,
-      company: 'Google',
-      position: 'Data Analyst',
-      status: 'Applied',
-      source: 'LinkedIn',
-      applied_date: '09 Jan'
-    },
-    {
-      id: 2,
-      company: 'Glits',
-      position: 'Data Analyst',
-      status: 'Applied',
-      source: 'LinkedIn',
-      applied_date: '09 Jan'
-    },
-    {
-      id: 3,
-      company: 'Telkom',
-      position: 'Data Analyst',
-      status: 'Applied',
-      source: 'LinkedIn',
-      applied_date: '09 Jan'
-    },
-    {
-      id: 4,
-      company: 'Telkom',
-      position: 'Data Analyst',
-      status: 'Applied',
-      source: 'LinkedIn',
-      applied_date: '09 Jan'
-    },
-    {
-      id: 5,
-      company: 'Telkom',
-      position: 'Data Analyst',
-      status: 'Applied',
-      source: 'LinkedIn',
-      applied_date: '09 Jan'
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        const data = await API.getListJob()
+        console.log("Fetched jobs:", data);
+        setJobs(data)
+      } catch (error) {
+        console.error("Failed to fetch jobs:", error);
+      }
     }
-  ]
+    fetchJob()
+  }, [])
+
+  console.log("Jobs state:", jobs);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -74,7 +62,7 @@ export default function LandingScren() {
               year: "numeric",
             })}
           </Text>
-          <Text style={styles.textUser}>Hi, Admin</Text>
+          <Text style={styles.textUser}>Hi, {name}</Text>
         </View>
         <TouchableOpacity onPress={() => router.navigate('/profile')}>
           <View style={styles.containerImage}>
@@ -131,7 +119,7 @@ export default function LandingScren() {
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ marginTop: 10, paddingRight: 16, gap: 18 }}
-          data={data.slice(0, 3)}
+          data={jobs}
           renderItem={({ item }) => (
             <CardJobComponent items={item} />
           )}

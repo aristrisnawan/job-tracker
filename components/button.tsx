@@ -1,12 +1,14 @@
 import {
+  ActivityIndicator,
   DimensionValue,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 
 interface valueButtoin {
   text: string;
+  isLoading?: boolean;
   color?: string;
   onClick: () => void;
   width?: DimensionValue;
@@ -15,6 +17,7 @@ interface valueButtoin {
 export default function ButtonComponent({
   text,
   color = "#0E21A0",
+  isLoading,
   onClick,
   width,
 }: valueButtoin) {
@@ -22,8 +25,13 @@ export default function ButtonComponent({
     <TouchableOpacity
       style={[styles.btn, { backgroundColor: color, width: width }]}
       onPress={onClick}
+      disabled={isLoading}
     >
-      <Text style={styles.textBtn}>{text}</Text>
+      {
+        isLoading ? (
+          <ActivityIndicator size="small" color="white"/>
+        ) : <Text style={styles.textBtn}>{text}</Text>
+      }
     </TouchableOpacity>
   );
 }

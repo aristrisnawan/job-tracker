@@ -1,54 +1,39 @@
 import CardJobComponent from "@/components/card-job"
+import API from "@/services/api"
+import { useEffect, useState } from "react"
 import { FlatList, View } from "react-native"
 
 export default function listJobsScreen() {
-    const data = [
-        {
-            id: 1,
-            company: 'Google',
-            position: 'Data Analyst',
-            status: 'Applied',
-            source: 'LinkedIn',
-            applied_date: '09 Jan'
-        },
-        {
-            id: 2,
-            company: 'Glits',
-            position: 'Data Analyst',
-            status: 'Applied',
-            source: 'LinkedIn',
-            applied_date: '09 Jan'
-        },
-        {
-            id: 3,
-            company: 'Telkom',
-            position: 'Data Analyst',
-            status: 'Applied',
-            source: 'LinkedIn',
-            applied_date: '09 Jan'
-        },
-        {
-            id: 4,
-            company: 'Telkom',
-            position: 'Data Analyst',
-            status: 'Applied',
-            source: 'LinkedIn',
-            applied_date: '09 Jan'
-        },
-        {
-            id: 5,
-            company: 'Telkom',
-            position: 'Data Analyst',
-            status: 'Applied',
-            source: 'LinkedIn',
-            applied_date: '09 Jan'
+    interface jobsInterface {
+        id: string,
+        user_id: string,
+        company_name: string,
+        position: string,
+        status: string,
+        source: string,
+        apply_date: string,
+        notes: string,
+    }
+
+    const [jobs, setJobs] = useState<jobsInterface[]>([])
+
+    useEffect(() => {
+        const dataFetch = async () => {
+            try {
+                const data = await API.getListJob()
+                setJobs(data)
+            } catch (error) {
+                console.error("Error fetching jobs:", error);
+            }
         }
-    ]
+        dataFetch()
+    },[])
+
     return (
         <View style={{ marginHorizontal: 16 }}>
             <FlatList
                 key={2}
-                data={data}
+                data={jobs}
                 numColumns={2}
                 contentContainerStyle={{ gap: 10, paddingTop: 16 }}
                 columnWrapperStyle={{ justifyContent: 'space-between' }}

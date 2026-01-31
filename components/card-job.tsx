@@ -1,11 +1,11 @@
 import { DimensionValue, StyleSheet, Text, View } from "react-native";
 
 interface cardValue {
-    id: number
-    company: string,
+    id: string
+    company_name: string,
     status: string,
     position: string,
-    applied_date: string,
+    apply_date: string,
     source: string
 }
 
@@ -15,9 +15,9 @@ interface itemData {
 }
 
 
-export default function CardJobComponent({items,width=180}:itemData) {
+export default function CardJobComponent({ items, width = 180 }: itemData) {
     return (
-        <View style={[styles.cardRecentJobs,{width: width}]}>
+        <View style={[styles.cardRecentJobs, { width: width }]}>
             <View>
                 <View
                     style={{
@@ -26,7 +26,7 @@ export default function CardJobComponent({items,width=180}:itemData) {
                         alignItems: "center",
                     }}
                 >
-                    <Text style={{ fontWeight: "500" }}>{items.company}</Text>
+                    <Text style={{ fontWeight: "500" }}>{items.company_name}</Text>
                     <View style={styles.containerTitle}>
                         <Text style={{ color: "white" }}>{items.status}</Text>
                     </View>
@@ -34,7 +34,12 @@ export default function CardJobComponent({items,width=180}:itemData) {
                 <Text style={{ fontWeight: "600" }}>{items.position}</Text>
             </View>
             <Text style={{ fontSize: 12, textAlign: "center" }}>
-                Applied on {items.applied_date}: {items.source}
+                Applied on {items.apply_date ? new Date(items.apply_date).toLocaleDateString("id-ID", {
+                    weekday: "short",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                }) : '-'}: {items.source}
             </Text>
         </View>
     )
