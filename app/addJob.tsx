@@ -30,6 +30,7 @@ export default function AddJobScreen() {
   })
 
   const handleAddJob = (name: string, value: string) => {
+    console.log("Updating form data:", name, value);
     setFormData(prevState => ({
       ...prevState,
       [name]: value

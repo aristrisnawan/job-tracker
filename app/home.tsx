@@ -59,6 +59,13 @@ export default function LandingScren() {
     fetchJob()
   }, [])
 
+  const onRefreshPage = async () => {
+    setRefreshing(true);
+    const response = await API.getListJob()
+    setJobs(response);
+    setRefreshing(false);
+  }
+
   console.log("Jobs state:", jobs);
 
   return (
@@ -66,7 +73,7 @@ export default function LandingScren() {
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing}
-            onRefresh={onRefresh} />
+            onRefresh={onRefreshPage} />
         }
       >
         <View style={styles.containerProfile}>
@@ -132,11 +139,18 @@ export default function LandingScren() {
               <Text style={styles.textViewAll}>View All</Text>
             </TouchableOpacity>
           </View>
+          {
+            jobs.length === 0 && (
+              <View style={{ marginTop: 10 }}>
+                <Text style={{ fontWeight: '500', textAlign: 'center', fontSize: 16 }}>Data not yet available</Text>
+              </View>
+            )
+          }
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ marginTop: 10, paddingRight: 16, gap: 18 }}
-            data={jobs}
+            data={jobs?.slice(0, 3)}
             renderItem={({ item }) => (
               <CardJobComponent items={item} />
             )}

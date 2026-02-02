@@ -12,5 +12,11 @@ interface addJobs {
     notes: string,
 }
 
-export type { addJobs, login };
+interface RegisterUser {
+    name: string,
+    email: string,
+    password: string,
+}
+
+export type { addJobs, login, RegisterUser };
 

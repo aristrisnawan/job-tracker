@@ -1,7 +1,7 @@
 import CardJobComponent from "@/components/card-job"
 import API from "@/services/api"
 import { useEffect, useState } from "react"
-import { FlatList, View } from "react-native"
+import { FlatList, Text, View } from "react-native"
 
 export default function listJobsScreen() {
     interface jobsInterface {
@@ -27,10 +27,17 @@ export default function listJobsScreen() {
             }
         }
         dataFetch()
-    },[])
+    }, [])
 
     return (
         <View style={{ marginHorizontal: 16 }}>
+            {
+                jobs.length === 0 && (
+                    <View style={{ marginTop: 10 }}>
+                        <Text style={{ fontWeight: '500', textAlign: 'center', fontSize: 16 }}>Data not yet available</Text>
+                    </View>
+                )
+            }
             <FlatList
                 key={2}
                 data={jobs}

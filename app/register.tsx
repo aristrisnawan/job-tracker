@@ -1,4 +1,5 @@
 import ButtonComponent from "@/components/button";
+import API from "@/services/api";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -18,6 +19,39 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterScreen() {
   const [passwordSeccure, setPasswordSeccure] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formdData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  })
+
+  const handleRegister = (name: string, value: string) => {
+    setFormData(prevSatate => ({
+      ...prevSatate,
+      [name]: value
+    }))
+  }
+
+  const handleSubmitRegister = async () => {
+    const { name, email, password } = formdData
+    if (!name || !email || !password) {
+      alert("Please fill in all required fields")
+      return
+    }
+
+    try {
+      console.log("Submitting register:", formdData);
+      await API.handleRegister(formdData)
+      setTimeout(() => {
+        setIsLoading(false)
+        alert("Register successful")
+        router.replace('/login')
+      }, 2000);
+    } catch (error) {
+      console.error("Failed to register:", error);
+    }
+  }
 
   return (
     <KeyboardAvoidingView
@@ -38,6 +72,7 @@ export default function RegisterScreen() {
               <TextInput
                 placeholder="Input your name"
                 style={styles.textField}
+                onChangeText={(text) => handleRegister('name', text)}
               />
             </TouchableWithoutFeedback>
           </View>
@@ -47,6 +82,7 @@ export default function RegisterScreen() {
               <TextInput
                 placeholder="Input your email"
                 style={styles.textField}
+                onChangeText={(text) => handleRegister('email', text)}
               />
             </TouchableWithoutFeedback>
           </View>
@@ -59,6 +95,7 @@ export default function RegisterScreen() {
                   style={{ flex: 1 }}
                   autoCapitalize="none"
                   secureTextEntry={passwordSeccure ? true : false}
+                  onChangeText={(text) => handleRegister('password', text)}
                 />
               </TouchableWithoutFeedback>
               <TouchableOpacity
@@ -73,7 +110,7 @@ export default function RegisterScreen() {
             </View>
           </View>
           <View style={styles.containerTextField}>
-            <ButtonComponent text="Sign Up" onClick={() => alert("Register")} />
+            <ButtonComponent text="Sign Up" onClick={() => handleSubmitRegister()} isLoading={isLoading}/>
           </View>
           <View style={styles.containerRedirectSignUp}>
             <Text style={{ textAlign: "center" }}>
