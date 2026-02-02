@@ -9,6 +9,7 @@ import {
   FlatList,
   Image,
   Keyboard,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -32,8 +33,18 @@ export default function LandingScren() {
   }
 
   const { name } = useAuth()
+  const [refreshing, setRefreshing] = useState(false);
   const [jobs, setJobs] = useState<jobsInterface[]>([])
   const date = new Date();
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }
+
+
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -52,93 +63,100 @@ export default function LandingScren() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.containerProfile}>
-        <View>
-          <Text>
-            {date.toLocaleDateString("id-ID", {
-              weekday: "short",
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
-          </Text>
-          <Text style={styles.textUser}>Hi, {name}</Text>
-        </View>
-        <TouchableOpacity onPress={() => router.navigate('/profile')}>
-          <View style={styles.containerImage}>
-            <Image
-              source={{
-                uri: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=580&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              }}
-              style={styles.image}
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
-      <Text>Keep tracking youre career</Text>
-      <View
-        style={{
-          marginTop: 16,
-          flexDirection: "row",
-          alignItems: "center",
-          borderWidth: 1,
-          borderRadius: 10,
-          paddingHorizontal: 10,
-        }}
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing}
+            onRefresh={onRefresh} />
+        }
       >
-        <MaterialIcons name="search" size={24} />
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss}>
-          <TextInput placeholder="Search" style={{ flex: 1 }} />
-        </TouchableWithoutFeedback>
-      </View>
-      <View style={{ marginTop: 16 }}>
-        <Text style={{ fontSize: 20, fontWeight: "600" }}>Job Overview</Text>
-        <ScrollView
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          contentContainerStyle={{ gap: 10 }}
-        >
-          {[1, 2, 3, 4, 5].map((_, index) => {
-            return (
-              <View key={index} style={styles.containerOverview}>
-                <Text style={styles.textOverview}>Applied</Text>
-                <Text>(10)</Text>
-              </View>
-            );
-          })}
-        </ScrollView>
-      </View>
-      <View style={{ marginTop: 16 }}>
-        <View style={styles.recentContainer}>
-          <Text style={styles.textRecent}>Recent Jobs</Text>
-          <TouchableOpacity onPress={() => router.navigate('/listJobs')}>
-            <Text style={styles.textViewAll}>View All</Text>
+        <View style={styles.containerProfile}>
+          <View>
+            <Text>
+              {date.toLocaleDateString("id-ID", {
+                weekday: "short",
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </Text>
+            <Text style={styles.textUser}>Hi, {name}</Text>
+          </View>
+          <TouchableOpacity onPress={() => router.navigate('/profile')}>
+            <View style={styles.containerImage}>
+              <Image
+                source={{
+                  uri: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=580&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                }}
+                style={styles.image}
+              />
+            </View>
           </TouchableOpacity>
         </View>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ marginTop: 10, paddingRight: 16, gap: 18 }}
-          data={jobs}
-          renderItem={({ item }) => (
-            <CardJobComponent items={item} />
-          )}
-          keyExtractor={item => item.id.toString()}
-        />
+        <Text>Keep tracking youre career</Text>
+        <View
+          style={{
+            marginTop: 16,
+            flexDirection: "row",
+            alignItems: "center",
+            borderWidth: 1,
+            borderRadius: 10,
+            paddingHorizontal: 10,
+          }}
+        >
+          <MaterialIcons name="search" size={24} />
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss}>
+            <TextInput placeholder="Search" style={{ flex: 1 }} />
+          </TouchableWithoutFeedback>
+        </View>
         <View style={{ marginTop: 16 }}>
-          <ButtonComponent
-            text="Add Job"
-            onClick={() => router.push("/addJob")}
+          <Text style={{ fontSize: 20, fontWeight: "600" }}>Job Overview</Text>
+          <ScrollView
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            contentContainerStyle={{ gap: 10 }}
+          >
+            {[1, 2, 3, 4, 5].map((_, index) => {
+              return (
+                <View key={index} style={styles.containerOverview}>
+                  <Text style={styles.textOverview}>Applied</Text>
+                  <Text>(10)</Text>
+                </View>
+              );
+            })}
+          </ScrollView>
+        </View>
+        <View style={{ marginTop: 16 }}>
+          <View style={styles.recentContainer}>
+            <Text style={styles.textRecent}>Recent Jobs</Text>
+            <TouchableOpacity onPress={() => router.navigate('/listJobs')}>
+              <Text style={styles.textViewAll}>View All</Text>
+            </TouchableOpacity>
+          </View>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ marginTop: 10, paddingRight: 16, gap: 18 }}
+            data={jobs}
+            renderItem={({ item }) => (
+              <CardJobComponent items={item} />
+            )}
+            keyExtractor={item => item.id.toString()}
           />
-          <View style={{ alignItems: "center", marginTop: 50 }}>
-            <Text style={styles.textQuote}>Keep Going</Text>
-            <Text style={styles.textQuote}>
-              You've applied to 10 jobs this month.
-            </Text>
-            <Text style={styles.textQuote}>Stay Consistent!</Text>
+          <View style={{ marginTop: 16 }}>
+            <ButtonComponent
+              text="Add Job"
+              onClick={() => router.push("/addJob")}
+            />
+            <View style={{ alignItems: "center", marginTop: 50 }}>
+              <Text style={styles.textQuote}>Keep Going</Text>
+              <Text style={styles.textQuote}>
+                You've applied to 10 jobs this month.
+              </Text>
+              <Text style={styles.textQuote}>Stay Consistent!</Text>
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

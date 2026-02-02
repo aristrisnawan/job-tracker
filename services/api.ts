@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import { addJobs, login } from '../types/jobs';
 
 // const BASE_URL = "http://localhost:8081/job-tracker-backend"
 const BASE_URL = "http://10.0.2.2/job-tracker-backend"
@@ -22,10 +23,7 @@ API_INSTANCE.interceptors.request.use(
     }
 )
 
-interface login {
-    email: string,
-    password: string
-}
+
 
 const handleLogin = async ({ email, password }: login) => {
     try {
@@ -52,9 +50,19 @@ const getListJob = async () => {
     }
 }
 
+const addDataJobs = async (data: addJobs) => {
+    try {
+       const response = await API_INSTANCE.post(`/jobs/create.php`,data) 
+       return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
 const API = {
     handleLogin,
-    getListJob
+    getListJob,
+    addDataJobs
 }
 
 export default API;

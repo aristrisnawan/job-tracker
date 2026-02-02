@@ -1,7 +1,9 @@
 import ButtonComponent from "@/components/button";
+import API from "@/services/api";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
+import { router } from "expo-router";
 import { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -17,12 +19,49 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AddJobScreen() {
   const [show, setShow] = useState(false);
-  const [date, setDate] = useState(new Date());
+  // const [date, setDate] = useState(new Date());
+  const [formData, setFormData] = useState({
+    company_name: "",
+    position: "",
+    status: "applied",
+    source: "",
+    apply_date: new Date(),
+    notes: "",
+  })
 
-  const onChangeCalendar = () => {
-    const currentDate = new Date() || date;
-    setDate(currentDate);
+  const handleAddJob = (name: string, value: string) => {
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }))
+  }
+
+  const onChangeCalendar = (event: any, selectedDate?: Date) => {
+    setShow(false);
+    if (selectedDate) {
+      setFormData({
+        ...formData,
+        apply_date: selectedDate,
+      })
+    }
   };
+
+  const submitJob = async () => {
+    const { company_name, position, source } = formData
+    if (!company_name || !position || !source) {
+      alert("Please fill in all required fields")
+      return
+    }
+    try {
+      console.log("Submitting job:", formData);
+      await API.addDataJobs(formData)
+      alert("Job added successfully")
+      router.replace('/listJobs')
+    } catch (error) {
+      console.error("Error adding job:", error);
+    }
+  }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -38,6 +77,7 @@ export default function AddJobScreen() {
               <TextInput
                 placeholder="Input company name"
                 style={{ borderWidth: 1, borderRadius: 10, marginTop: 10 }}
+                onChangeText={(text) => handleAddJob('company_name', text)}
               />
             </TouchableWithoutFeedback>
             <Text style={{ marginTop: 10 }}>Position</Text>
@@ -45,6 +85,7 @@ export default function AddJobScreen() {
               <TextInput
                 placeholder="Input position"
                 style={{ borderWidth: 1, borderRadius: 10, marginTop: 10 }}
+                onChangeText={(text) => handleAddJob('position', text)}
               />
             </TouchableWithoutFeedback>
             <Text style={{ marginTop: 10 }}>Status</Text>
@@ -57,8 +98,13 @@ export default function AddJobScreen() {
                 overflow: "hidden",
               }}
             >
-              <Picker style={{ height: 55, width: "100%" }}>
+              <Picker
+                selectedValue={formData.status}
+                onValueChange={(itemValue) => handleAddJob('status', itemValue)}
+                style={{ height: 55, width: "100%" }}>
                 <Picker.Item label="Applied" value="applied" />
+                <Picker.Item label="Interview" value="interview" />
+                <Picker.Item label="Offer" value="offer" />
                 <Picker.Item label="Reject" value="reject" />
               </Picker>
             </View>
@@ -67,6 +113,7 @@ export default function AddJobScreen() {
               <TextInput
                 placeholder="Input source"
                 style={{ borderWidth: 1, borderRadius: 10, marginTop: 10 }}
+                onChangeText={(text) => handleAddJob('source', text)}
               />
             </TouchableWithoutFeedback>
             <Text style={{ marginTop: 10 }}>Apply Date</Text>
@@ -82,21 +129,24 @@ export default function AddJobScreen() {
               }}
             >
               <Text>
-                {date.toLocaleDateString("id-ID", {
+                {formData.apply_date.toLocaleDateString("id-ID", {
                   day: "numeric",
                   month: "long",
                   year: "numeric",
                 })}
               </Text>
-              <TouchableOpacity onPress={() => setShow(true)}>
+              <TouchableOpacity onPress={() => {
+                if (!show) setShow(true)
+              }}>
                 <MaterialIcons name="calendar-month" size={24} />
               </TouchableOpacity>
             </View>
             {show && (
               <DateTimePicker
-                value={date}
+                value={formData.apply_date}
                 mode="date"
                 display="calendar"
+                maximumDate={new Date()}
                 onChange={onChangeCalendar}
               />
             )}
@@ -111,13 +161,15 @@ export default function AddJobScreen() {
                   textAlignVertical: "top",
                 }}
                 multiline={true}
+                placeholder="Input notes"
+                onChangeText={(text) => handleAddJob('notes', text)}
               />
             </TouchableWithoutFeedback>
           </View>
           <View style={{ marginTop: 16 }}>
             <ButtonComponent
               text="Save Job"
-              onClick={() => alert("Job save")}
+              onClick={() => submitJob()}
             />
           </View>
         </ScrollView>
