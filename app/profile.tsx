@@ -2,7 +2,9 @@ import ButtonComponent from "@/components/button";
 import { useAuth } from "@/context/AuthContext";
 import { Image, Text, View } from "react-native";
 
+
 export default function ProfileScreen() {
+    const {name, email} = useAuth()
     const { signOut } = useAuth()
     return (
         <View style={{ marginHorizontal: 16 }}>
@@ -13,8 +15,8 @@ export default function ProfileScreen() {
                         style={{ width: 130, height: 130, borderRadius: 100 }}
                     />
                 </View>
-                <Text style={{ marginTop: 10 }}>Admin</Text>
-                <Text style={{ marginTop: 10 }}>admin@gmail.com</Text>
+                <Text style={{ marginTop: 10 }}>{name}</Text>
+                <Text style={{ marginTop: 10 }}>{email}</Text>
                 <Text style={{ marginTop: 20 }}>Total applied: 12</Text>
             </View>
             <View style={{ marginTop: 50 }}>

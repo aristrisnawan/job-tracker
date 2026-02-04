@@ -35,7 +35,7 @@ export default function LoginScreen() {
     try {
       const data = await API.handleLogin({ email, password });
       if (data.token) {
-        await signIn(data.token, data.user.name)
+        await signIn(data.token, data.user.name, data.user.email)
         setTimeout(() => {
           setIsLoading(false)
           router.replace('/home')

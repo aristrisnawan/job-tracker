@@ -16,7 +16,27 @@ interface itemData {
 
 
 export default function CardJobComponent({ items, width = 180 }: itemData) {
+    const appliedColor = '#0E21A0';
+    const interviewColor = '#FFC107';
+    const rejectedColor = '#DC3545';
+    const offerColor = '#28A745';
+
+    const getStatusColor = (status: string) => {
+        switch (status.toLocaleLowerCase()) {
+            case 'applied':
+                return appliedColor;
+            case 'interview':
+                return interviewColor;
+            case 'rejected':
+                return rejectedColor;
+            case 'offer':
+                return offerColor;
+            default:
+                return '#6c757d';
+        }
+    }
     return (
+    
         <View style={[styles.cardRecentJobs, { width: width }]}>
             <View>
                 <View
@@ -27,7 +47,7 @@ export default function CardJobComponent({ items, width = 180 }: itemData) {
                     }}
                 >
                     <Text style={{ fontWeight: "500" }}>{items.company_name}</Text>
-                    <View style={styles.containerTitle}>
+                    <View style={[styles.containerTitle, { backgroundColor: getStatusColor(items.status) }]}>
                         <Text style={{ color: "white" }}>{items.status}</Text>
                     </View>
                 </View>
@@ -53,7 +73,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     containerTitle: {
-        backgroundColor: "#0E21A0",
         paddingHorizontal: 10,
         paddingVertical: 4,
         borderRadius: 20,
