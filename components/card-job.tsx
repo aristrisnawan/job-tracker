@@ -1,4 +1,4 @@
-import { DimensionValue, StyleSheet, Text, View } from "react-native";
+import { DimensionValue, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface cardValue {
     id: string
@@ -36,32 +36,33 @@ export default function CardJobComponent({ items, width = 180 }: itemData) {
         }
     }
     return (
-    
-        <View style={[styles.cardRecentJobs, { width: width }]}>
-            <View>
-                <View
-                    style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                    }}
-                >
-                    <Text style={{ fontWeight: "500" }}>{items.company_name}</Text>
-                    <View style={[styles.containerTitle, { backgroundColor: getStatusColor(items.status) }]}>
-                        <Text style={{ color: "white" }}>{items.status}</Text>
+        <TouchableOpacity onPress={() => alert('clicked')} style={{ width: width }}>
+            <View style={[styles.cardRecentJobs]}>
+                <View>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Text style={{ fontWeight: "500" }}>{items.company_name}</Text>
+                        <View style={[styles.containerTitle, { backgroundColor: getStatusColor(items.status) }]}>
+                            <Text style={{ color: "white" }}>{items.status}</Text>
+                        </View>
                     </View>
+                    <Text style={{ fontWeight: "600" }}>{items.position}</Text>
                 </View>
-                <Text style={{ fontWeight: "600" }}>{items.position}</Text>
+                <Text style={{ fontSize: 12, textAlign: "center" }}>
+                    Applied on {items.apply_date ? new Date(items.apply_date).toLocaleDateString("id-ID", {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                    }) : '-'}: {items.source}
+                </Text>
             </View>
-            <Text style={{ fontSize: 12, textAlign: "center" }}>
-                Applied on {items.apply_date ? new Date(items.apply_date).toLocaleDateString("id-ID", {
-                    weekday: "short",
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                }) : '-'}: {items.source}
-            </Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 
