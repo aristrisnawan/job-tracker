@@ -57,6 +57,7 @@ export default function AddJobScreen() {
       console.log("Submitting job:", formData);
       await API.addDataJobs(formData)
       alert("Job added successfully")
+      console.log("Navigating to listJobs", formData.status);
       router.replace('/listJobs')
     } catch (error) {
       console.error("Error adding job:", error);
@@ -106,7 +107,7 @@ export default function AddJobScreen() {
                 <Picker.Item label="Applied" value="applied" />
                 <Picker.Item label="Interview" value="interview" />
                 <Picker.Item label="Offer" value="offer" />
-                <Picker.Item label="Reject" value="reject" />
+                <Picker.Item label="Reject" value="rejected" />
               </Picker>
             </View>
             <Text style={{ marginTop: 10 }}>Source</Text>

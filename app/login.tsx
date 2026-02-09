@@ -13,6 +13,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -26,6 +27,16 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
+  const showToast = (message: string) => {
+      ToastAndroid.showWithGravityAndOffset(
+        message,
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+        25,
+        30
+      );
+    }
+
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Please fill in all fields")
@@ -36,13 +47,13 @@ export default function LoginScreen() {
       const data = await API.handleLogin({ email, password });
       if (data.token) {
         await signIn(data.token, data.user.name, data.user.email)
+        showToast("Login successful")
         setTimeout(() => {
-          setIsLoading(false)
+          // setIsLoading(false)
           router.replace('/home')
-        }, 2000)
+        }, 1500);
       }
     } catch (error: any) {
-      console.error("Login error:", error);
       const serverMessage = error.response?.data?.error
       Alert.alert("Error", serverMessage || "Something went wrong");
     } finally {
