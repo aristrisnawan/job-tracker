@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { DimensionValue, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface cardValue {
@@ -36,7 +37,13 @@ export default function CardJobComponent({ items, width = 180 }: itemData) {
         }
     }
     return (
-        <TouchableOpacity onPress={() => alert('clicked')} style={{ width: width }}>
+        <TouchableOpacity onPress={() => router.push({
+            pathname: `/cardDetail/[id]`,
+            params: {
+                id: items.id,
+                item: JSON.stringify(items)
+            }
+        })} style={{ width: width }}>
             <View style={[styles.cardRecentJobs]}>
                 <View>
                     <View

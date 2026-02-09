@@ -38,7 +38,7 @@ function RootLayoutNav() {
           name="addJob"
           options={{ title: "Add Job", headerShown: true }}
         />
-        <Stack.Screen name="card-detail/[id]" options={{ title: "Job Detail", headerShown: true }} />
+        <Stack.Screen name="cardDetail/[id]" options={{ title: "Job Detail", headerShown: true }} />
         <Stack.Screen
           name="listJobs"
           options={{ title: "List Job", headerShown: true }}
